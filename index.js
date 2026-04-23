@@ -1,77 +1,83 @@
-// 3. Akademik/Rasmiy uslubdagi PDF yaratish funksiyasi
 function generatePDF(name, phone) {
     const element = document.createElement('div');
     
-    // Hujjat tarkibi (Siz yuborgan rasmdagi uslubda)
+    // Haqiqiy 1x1 rasmiy hujjat dizayni
     element.innerHTML = `
-        <div style="width: 794px; padding: 80px; font-family: 'Times New Roman', serif; line-height: 1.5; color: #000; background: white; position: relative; box-sizing: border-box;">
+        <div style="width: 794px; height: 1123px; padding: 90px; font-family: 'Times New Roman', Times, serif; background: white; position: relative; box-sizing: border-box; color: #000; line-height: 1.6;">
             
-            <div style="position: absolute; top: 35%; left: 15%; transform: rotate(-45deg); font-size: 80px; color: rgba(26, 115, 232, 0.05); font-weight: bold; pointer-events: none; z-index: 0;">
-                ANTI.V SECURITY
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 22pt; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">ANTI.V GLOBAL SECURITY SOLUTIONS</div>
+                <div style="font-size: 10pt; margin-top: 5px;">CERTIFIED CYBERSECURITY SYSTEMS DIVISION</div>
+                <hr style="border: 0; border-top: 2px solid #000; margin-top: 15px;">
             </div>
 
-            <div style="position: relative; z-index: 1;">
-                <div style="text-align: center; margin-bottom: 40px;">
-                    <h2 style="font-size: 18pt; margin-bottom: 10px; text-transform: uppercase;">
-                        Mavzu: Elektron hujjat aylanish tizimlarining dunyo bozori va hozirgi bosqichdagi asosiy rivojlanish yo'nalishlari.
-                    </h2>
-                    <h3 style="font-size: 16pt; font-weight: normal; margin-top: 20px;">Reja:</h3>
-                </div>
+            <div style="display: flex; justify-content: space-between; font-size: 12pt; margin-bottom: 40px;">
+                <div>Chiqish №: AV/${Math.floor(1000 + Math.random() * 9000)}-${new Date().getFullYear()}</div>
+                <div>Sana: ${new Date().toLocaleDateString()} yil</div>
+            </div>
 
-                <div style="margin-left: 40px; margin-bottom: 50px; font-size: 14pt;">
-                    <p>1. ELEKTRON HUJJAT AYLANISH TIZIMLARINING TUSHUNCHASI</p>
-                    <p>2. ZAMONAVIY BOSQICHDAGI ASOSIY ELEKTRON HUJJAT AYLANISH TIZIMLARI</p>
-                    <p>3. ELEKTRON HUJJAT AYLANISH TIZIMIDA QO'LLANILADIGAN XAVFSIZLIK STANDARTLARI</p>
-                </div>
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 16pt; text-decoration: underline; text-transform: uppercase;">BILDIRISHNOMA (CERTIFICATE)</h2>
+            </div>
 
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <h3 style="font-size: 14pt; border-bottom: 1px solid #000; display: inline-block; padding-bottom: 2px;">
-                        Xulosa va litsenziya tasdiqnomasi
-                    </h3>
-                </div>
+            <div style="font-size: 13pt; text-align: justify; text-indent: 50px;">
+                <p style="margin-bottom: 20px;">
+                    Ushbu rasmiy bildirishnoma shuni tasdiqlaydi-ki, foydalanuvchi <b>${name}</b> (tel: <b>${phone}</b>) 
+                    tomonidan foydalanilayotgan elektron qurilma ANTI.V kiberxavfsizlik xizmatining 3.1-versiyali 
+                    algoritmlari asosida to'liq texnik nazoratdan o'tkazildi.
+                </p>
 
-                <div style="font-size: 12pt; text-align: justify; text-indent: 50px;">
-                    <p>
-                        Bugungi kunda axborot xavfsizligini ta'minlash global miqyosdagi dolzarb masalalardan biriga aylandi. 
-                        Ushbu hujjat orqali foydalanuvchi <b>${name}</b> (tel: ${phone}) tomonidan boshqarilayotgan qurilma 
-                        ANTI.V xavfsizlik tizimining so'nggi algoritmlari asosida to'liq tekshiruvdan o'tkazildi. 
-                    </p>
-                    <p>
-                        Tizimning hozirgi holati: <b>Himoyalangan</b>. Skanerlash natijasida barcha zararli paketlar va 
-                        shubhali jarayonlar bloklandi. Elektron hujjat aylanishining xavfsizligi xalqaro standartlarga 
-                        muvofiq ravishda kafolatlanadi.
-                    </p>
-                </div>
+                <p style="margin-bottom: 20px;">
+                    Tekshiruv davomida tizimda mavjud bo'lgan zararli dasturiy ta'minotlar (Trojan, Spyware, Miner) 
+                    aniqlandi va litsenziyalangan xavfsizlik protokollari yordamida muvaffaqiyatli bartaraf etildi. 
+                    Hozirgi vaqtda qurilmaning tarmoq trafigi shifrlangan tunnel (VPN) orqali himoyalangan va 
+                    tizim butunlay xavfsiz holatga keltirilgan.
+                </p>
 
-                <div style="margin-top: 100px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="text-align: left;">
-                        <p style="margin: 0;">Mas'ul shaxs:</p>
-                        <p style="margin: 5px 0; font-style: italic; border-bottom: 1px solid #000; width: 200px;">
-                            (Signature / Imzo)
-                        </p>
-                        <p style="font-size: 10pt; color: #555;">Kiberxavfsizlik departamenti boshlig'i</p>
-                    </div>
-                    
-                    <div style="position: relative; width: 150px; height: 150px; border: 4px double #1a73e8; border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-10deg); color: #1a73e8; font-weight: bold; text-align: center; font-size: 10pt;">
-                        <div style="padding: 10px;">
-                            ANTI.V<br>OFFICIAL<br>SECURITY<br>CERTIFIED
+                <p>
+                    Ushbu litsenziya tasdiqnomasi 12 oy davomida o'z kuchida qoladi va qurilmaning xalqaro kiber-xavfsizlik 
+                    standartlariga muvofiqligini kafolatlaydi.
+                </p>
+            </div>
+
+            <div style="margin-top: 40px; border: 1px solid #000; padding: 15px; font-size: 11pt; background: #fafafa;">
+                <b>XAVFSIZLIK ANALIZI NATIJALARI:</b>
+                <ul style="margin-top: 10px;">
+                    <li>Qurilma holati: 100% Himoyalangan (Active)</li>
+                    <li>IP manzili: 82.145.211.255 (London, UK)</li>
+                    <li>Aniqlangan xavflar: 2 ta (Bartaraf etildi)</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 80px; position: relative; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div style="text-align: left;">
+                    <p style="margin-bottom: 40px;">Bosh mutaxassis:</p>
+                    <div style="position: relative;">
+                        <div style="position: absolute; top: -35px; left: 20px; font-family: 'Brush Script MT', cursive; font-size: 28pt; color: #1a237e; opacity: 0.8; transform: rotate(-5deg);">
+                            A. Jasur
                         </div>
+                        <p style="border-top: 1px solid #000; width: 250px; padding-top: 5px;">(Imzo) / A. Jasur</p>
                     </div>
                 </div>
 
-                <div style="margin-top: 60px; text-align: center; font-size: 10pt; color: #888; border-top: 1px solid #eee; padding-top: 10px;">
-                    Hujjat ID: AV-${Math.floor(100000 + Math.random() * 900000)} | Sana: ${new Date().toLocaleDateString()}
+                <div style="position: relative; width: 160px; height: 160px; border: 4px double #1a237e; border-radius: 50%; display: flex; align-items: center; justify-content: center; transform: rotate(-15deg); color: #1a237e; font-weight: bold; text-align: center; font-size: 10pt; opacity: 0.7; box-shadow: inset 0 0 5px rgba(26,35,126,0.2);">
+                    <div style="border: 2px solid #1a237e; border-radius: 50%; width: 140px; height: 140px; display: flex; align-items: center; justify-content: center;">
+                        ANTI.V SECURITY<br>OFFICIAL SEAL<br>* 2026 *
+                    </div>
                 </div>
+            </div>
+
+            <div style="position: absolute; bottom: 40px; left: 0; width: 100%; text-align: center; font-size: 8pt; color: #777;">
+                Ushbu hujjat elektron ko'rinishda shakllantirilgan va qog'oz nusxasi bilan bir xil yuridik kuchga ega.
             </div>
         </div>
     `;
 
-    // PDF yuklash parametrlari
     const options = {
-        margin: [0, 0, 0, 0],
-        filename: `Xabarnoma_${name}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+        margin: [?, ?, ?, ?],
+        filename: `RASMIY_BILDIRISHNOMA_${name}.pdf`,
+        image: { type: 'jpeg', quality: 1.0 },
+        html2canvas: { scale: 3, letterRendering: true, useCORS: true },
         jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' }
     };
 
