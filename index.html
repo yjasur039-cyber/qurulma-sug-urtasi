@@ -3,81 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Havfsizlik 2.0 | Official</title>
+    <title>Havfsizlik 2.0 | Official Suite</title>
     <style>
         :root { --p-bg: #ffffff; --a-blue: #1a73e8; --t-dark: #202124; --i-bg: #f1f3f4; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Google Sans', sans-serif; background: var(--p-bg); color: var(--t-dark); overflow: hidden; }
-        .container { display: flex; flex-direction: column; height: 100vh; width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; box-sizing: border-box; text-align: center; }
+        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--p-bg); color: var(--t-dark); overflow: hidden; }
+        .container { display: flex; flex-direction: column; height: 100vh; width: 100%; max-width: 450px; margin: 0 auto; padding: 30px; box-sizing: border-box; text-align: center; }
         
-        /* Input & Button Styles */
-        input { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--i-bg); font-size: 16px; margin-bottom: 15px; box-sizing: border-box; }
-        .btn-black { background: #000; color: #fff; border: none; padding: 18px; border-radius: 15px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: auto; }
+        /* Rasmiy Box */
+        .status-box { border: 1.5px solid #000; display: inline-block; padding: 5px 25px; border-radius: 8px; margin: 10px auto 30px auto; font-size: 20px; font-weight: bold; }
 
-        /* Silliqlangan Sakkiz Qirrali Emblema (Siz yuborgandek) */
-        .emblem-core {
-            width: 150px; height: 150px; cursor: pointer;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 0 10px rgba(26,115,232,0.2));
-            margin: auto;
+        /* Inputlar */
+        input { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--i-bg); font-size: 16px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
+        
+        .btn-black { background: #000; color: #fff; border: none; padding: 18px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: auto; width: 100%; }
+
+        /* SIZNING EMBLEMANINGIZ (SVG ko'rinishida) */
+        .emblem-svg {
+            width: 180px; height: 180px; cursor: pointer;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            transition: transform 0.2s;
         }
-        .emblem-core:hover { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(26,115,232,0.5)); }
+        .emblem-svg:active { transform: scale(0.95); }
         
         .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.3s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .user-card { background: var(--i-bg); padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .user-pic { width: 40px; height: 40px; background: #fff; border: 2px solid var(--a-blue); border-radius: 50%; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="step1" class="fade-in" style="height:100%; display:flex; flex-direction:column;">
-        <h1 style="border: 1.5px solid #000; display:inline-block; padding:5px 20px; border-radius:8px; margin: 20px auto 40px auto; font-size:22px;">havfsizlik 2.0</h1>
-        <input type="text" placeholder="Ism-Familiya">
+        <div class="status-box">havfsizlik 2.0</div>
+        <input type="text" id="uName" placeholder="Ism">
+        <input type="text" id="uSurname" placeholder="Familiya">
         <input type="tel" value="+998">
-        <button class="btn-black" onclick="showStep(2)">keyingisi</button>
+        <input type="email" placeholder="Gmail">
+        <button class="btn-black" onclick="toStep(2)">keyingisi</button>
     </div>
 
     <div id="step2" class="hidden fade-in" style="height:100%; display:flex; flex-direction:column;">
-        <p style="font-size:12px; color:#555; text-align:left;">android sistemasi: <br><b style="color:var(--a-blue);">Active Security Shield</b></p>
-        
-        <div style="flex-grow:1; display:flex; justify-content:center; align-items:center;">
-            <svg class="emblem-core" viewBox="0 0 100 100" onclick="showStep(3)">
-                <rect x="15" y="15" width="70" height="70" rx="2" stroke="var(--a-blue)" stroke-width="4" fill="none" transform="rotate(45 50 50)"/>
-                <rect x="15" y="15" width="70" height="70" rx="2" stroke="var(--a-blue)" stroke-width="4" fill="none"/>
-                <circle cx="50" cy="50" r="5" fill="var(--a-blue)"/>
-            </svg>
+        <div class="status-box">havfsizlik 2.0</div>
+        <p style="margin-bottom: 30px; font-size: 14px; color: #555;">iltimos kelgan code ni kiriting:</p>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 40px;">
+            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
+            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
+            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
+            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
+            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
         </div>
-        
-        <p style="font-weight:bold; color:var(--a-blue); animation:pulse 2s infinite;">TEKSHIRISH UCHUN EMBLEMANI BOSING</p>
+        <button class="btn-black" onclick="toStep(3)">tizimga kirish</button>
     </div>
 
-    <div id="step3" class="hidden fade-in" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-        <svg class="emblem-core" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 20px #34a853);">
-            <rect x="15" y="15" width="70" height="70" rx="2" stroke="#34a853" stroke-width="4" fill="#34a853" opacity="0.1" transform="rotate(45 50 50)"/>
-            <rect x="15" y="15" width="70" height="70" rx="2" stroke="#34a853" stroke-width="4" fill="#34a853" opacity="0.1"/>
-            <path d="M35 50 L45 60 L65 40" stroke="#34a853" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <div id="step3" class="hidden fade-in" style="height:100%; display:flex; flex-direction:column;">
+        <div class="user-card">
+            <div style="text-align: left;">
+                <span style="font-size: 11px;">Foydalanuvchi:</span><br>
+                <b id="dispName" style="border: 1px solid #000; padding: 2px 8px; font-size: 14px;">Akmal</b>
+            </div>
+            <div class="user-pic"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%"></div>
+        </div>
+
+        <p style="text-align: left; font-size: 13px;">android sistemasi: <br><b style="color:var(--a-blue);">Android 14 | Security Patch 2026</b></p>
+
+        <div style="flex-grow:1; display:flex; justify-content:center; align-items:center; flex-direction:column;">
+            <svg class="emblem-svg" viewBox="0 0 100 100" onclick="completeSecure()">
+                <path d="M50 5 L62 38 L95 38 L68 58 L78 92 L50 72 L22 92 L32 58 L5 38 L38 38 Z" 
+                      fill="none" stroke="black" stroke-width="4" stroke-linejoin="round"/>
+                <path d="M50 18 L57 42 L82 42 L62 56 L68 80 L50 66 L32 80 L38 56 L18 42 L43 42 Z" 
+                      fill="#34a853" opacity="0" id="innerFill"/>
+            </svg>
+            <p id="statusMsg" style="margin-top: 20px; font-weight: bold; font-size: 12px; color: #555;">TIZIMNI YAKUNIY TASDIQLASH</p>
+        </div>
+    </div>
+
+    <div id="step4" class="hidden fade-in" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+        <svg width="120" height="120" viewBox="0 0 100 100">
+             <path d="M50 5 L62 38 L95 38 L68 58 L78 92 L50 72 L22 92 L32 58 L5 38 L38 38 Z" 
+                      fill="#34a853" stroke="#34a853" stroke-width="2"/>
+             <path d="M35 50 L45 60 L65 40" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
         </svg>
-        
-        <h1 style="color:#34a853; margin-top:30px;">100% HIMOAYALANDI</h1>
-        <p style="color:#555;">Qurilmangiz to'liq auditdan o'tdi.</p>
-        <button class="btn-black" onclick="location.reload()" style="margin-top:40px; width:100%;">Tugallash</button>
+        <h2 style="color: #34a853; margin-top: 20px;">TIZIM 100% HIMOAYALANDI ✅</h2>
+        <button class="btn-black" onclick="location.reload()" style="margin-top: 30px;">TUGALLASH</button>
     </div>
 </div>
 
 <script>
-    function showStep(step) {
-        document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
-        document.getElementById('step' + step).classList.remove('hidden');
-        
-        if(step === 2) {
-            // Bu yerda botga ma'lumot yuborish kodi bo'lishi mumkin
+    function toStep(n) {
+        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
+        document.getElementById('step' + n).classList.remove('hidden');
+        if(n === 3) {
+            const name = document.getElementById('uName').value || "Akmal";
+            document.getElementById('dispName').innerText = name;
         }
     }
-</script>
 
-<style>
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-</style>
+    function completeSecure() {
+        const msg = document.getElementById('statusMsg');
+        msg.innerText = "TEKSHIRILMOQDA...";
+        msg.style.color = "#1a73e8";
+        
+        setTimeout(() => {
+            toStep(4);
+        }, 1500);
+    }
+</script>
 
 </body>
 </html>
