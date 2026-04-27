@@ -3,114 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Havfsizlik 2.0 | Official Suite</title>
+    <title>Havfsizlik 2.0 | Multi-Step</title>
     <style>
         :root { --p-bg: #ffffff; --a-blue: #1a73e8; --t-dark: #202124; --i-bg: #f1f3f4; }
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--p-bg); color: var(--t-dark); overflow: hidden; }
-        .container { display: flex; flex-direction: column; height: 100vh; width: 100%; max-width: 450px; margin: 0 auto; padding: 30px; box-sizing: border-box; text-align: center; }
         
-        /* Rasmiy Box */
-        .status-box { border: 1.5px solid #000; display: inline-block; padding: 5px 25px; border-radius: 8px; margin: 10px auto 30px auto; font-size: 20px; font-weight: bold; }
+        body, html { 
+            margin: 0; padding: 0; height: 100%; 
+            font-family: 'Segoe UI', sans-serif; 
+            background: var(--p-bg); color: var(--t-dark); 
+            overflow: hidden; 
+        }
 
-        /* Inputlar */
-        input { width: 100%; padding: 15px; border-radius: 10px; border: none; background: var(--i-bg); font-size: 16px; margin-bottom: 12px; box-sizing: border-box; outline: none; }
-        
-        .btn-black { background: #000; color: #fff; border: none; padding: 18px; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: auto; width: 100%; }
+        /* Oynalar konteyneri - gorizontal surilish uchun */
+        .viewport {
+            display: flex;
+            width: 400%; /* 4 ta oyna uchun */
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        /* SIZNING EMBLEMANINGIZ (SVG ko'rinishida) */
+        .screen {
+            width: 25%; /* Har bir oyna ekran kengligida */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* Elementlar dizayni */
+        .status-header { 
+            border: 1.5px solid #000; display: inline-block; 
+            padding: 5px 25px; border-radius: 8px; 
+            margin: 10px auto 40px auto; font-size: 20px; font-weight: bold; 
+        }
+
+        input { 
+            width: 100%; padding: 16px; border-radius: 12px; 
+            border: none; background: var(--i-bg); 
+            font-size: 16px; margin-bottom: 15px; box-sizing: border-box; outline: none;
+        }
+
+        .btn-black { 
+            background: #000; color: #fff; border: none; 
+            padding: 18px; border-radius: 15px; font-size: 18px; 
+            font-weight: bold; cursor: pointer; margin-top: auto; 
+        }
+
+        /* SIZNING EMBLEMANINGIZ */
         .emblem-svg {
             width: 180px; height: 180px; cursor: pointer;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-            transition: transform 0.2s;
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
+            margin: auto;
         }
-        .emblem-svg:active { transform: scale(0.95); }
-        
-        .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .user-card { background: var(--i-bg); padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .user-pic { width: 40px; height: 40px; background: #fff; border: 2px solid var(--a-blue); border-radius: 50%; }
+        .user-info-bar { 
+            background: var(--i-bg); padding: 15px; border-radius: 15px; 
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        }
+
+        .otp-inputs { display: flex; gap: 10px; justify-content: center; margin: 40px 0; }
+        .otp-item { width: 45px; height: 55px; text-align: center; font-size: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="step1" class="fade-in" style="height:100%; display:flex; flex-direction:column;">
-        <div class="status-box">havfsizlik 2.0</div>
-        <input type="text" id="uName" placeholder="Ism">
-        <input type="text" id="uSurname" placeholder="Familiya">
+<div class="viewport" id="vPort">
+    
+    <div class="screen">
+        <div class="status-header">havfsizlik 2.0</div>
+        <input type="text" id="nameIn" placeholder="Ism">
+        <input type="text" placeholder="Familiya">
         <input type="tel" value="+998">
         <input type="email" placeholder="Gmail">
-        <button class="btn-black" onclick="toStep(2)">keyingisi</button>
+        <button class="btn-black" onclick="moveTo(1)">keyingisi</button>
     </div>
 
-    <div id="step2" class="hidden fade-in" style="height:100%; display:flex; flex-direction:column;">
-        <div class="status-box">havfsizlik 2.0</div>
-        <p style="margin-bottom: 30px; font-size: 14px; color: #555;">iltimos kelgan code ni kiriting:</p>
-        <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 40px;">
-            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
-            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
-            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
-            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
-            <input type="text" maxlength="1" style="width: 50px; text-align: center; font-weight: bold; font-size: 20px;">
+    <div class="screen">
+        <div class="status-header">havfsizlik 2.0</div>
+        <p style="color: #555;">iltimos kelgan code ni kiriting:</p>
+        <div class="otp-inputs">
+            <input type="text" class="otp-item" maxlength="1">
+            <input type="text" class="otp-item" maxlength="1">
+            <input type="text" class="otp-item" maxlength="1">
+            <input type="text" class="otp-item" maxlength="1">
+            <input type="text" class="otp-item" maxlength="1">
         </div>
-        <button class="btn-black" onclick="toStep(3)">tizimga kirish</button>
+        <button class="btn-black" onclick="moveTo(2)">tizimga kirish</button>
     </div>
 
-    <div id="step3" class="hidden fade-in" style="height:100%; display:flex; flex-direction:column;">
-        <div class="user-card">
+    <div class="screen">
+        <div class="user-info-bar">
             <div style="text-align: left;">
                 <span style="font-size: 11px;">Foydalanuvchi:</span><br>
-                <b id="dispName" style="border: 1px solid #000; padding: 2px 8px; font-size: 14px;">Akmal</b>
+                <b id="userLabel" style="border: 1px solid #000; padding: 2px 8px;">Akmal</b>
             </div>
-            <div class="user-pic"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%"></div>
+            <div style="width: 40px; height: 40px; background: #fff; border-radius: 50%; border: 1px solid var(--a-blue);">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%">
+            </div>
         </div>
+        
+        <p style="text-align: left; font-size: 13px;">android sistemasi: <br><b style="color:var(--a-blue);">Android 14 | SDK 34</b></p>
 
-        <p style="text-align: left; font-size: 13px;">android sistemasi: <br><b style="color:var(--a-blue);">Android 14 | Security Patch 2026</b></p>
-
-        <div style="flex-grow:1; display:flex; justify-content:center; align-items:center; flex-direction:column;">
-            <svg class="emblem-svg" viewBox="0 0 100 100" onclick="completeSecure()">
+        <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
+            <svg class="emblem-svg" viewBox="0 0 100 100" onclick="moveTo(3)">
                 <path d="M50 5 L62 38 L95 38 L68 58 L78 92 L50 72 L22 92 L32 58 L5 38 L38 38 Z" 
                       fill="none" stroke="black" stroke-width="4" stroke-linejoin="round"/>
-                <path d="M50 18 L57 42 L82 42 L62 56 L68 80 L50 66 L32 80 L38 56 L18 42 L43 42 Z" 
-                      fill="#34a853" opacity="0" id="innerFill"/>
             </svg>
-            <p id="statusMsg" style="margin-top: 20px; font-weight: bold; font-size: 12px; color: #555;">TIZIMNI YAKUNIY TASDIQLASH</p>
         </div>
+        <p style="font-size: 12px; font-weight: bold; color: var(--a-blue);">TASDIQLASH UCHUN BOSING</p>
     </div>
 
-    <div id="step4" class="hidden fade-in" style="height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-        <svg width="120" height="120" viewBox="0 0 100 100">
-             <path d="M50 5 L62 38 L95 38 L68 58 L78 92 L50 72 L22 92 L32 58 L5 38 L38 38 Z" 
-                      fill="#34a853" stroke="#34a853" stroke-width="2"/>
-             <path d="M35 50 L45 60 L65 40" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
-        </svg>
-        <h2 style="color: #34a853; margin-top: 20px;">TIZIM 100% HIMOAYALANDI ✅</h2>
-        <button class="btn-black" onclick="location.reload()" style="margin-top: 30px;">TUGALLASH</button>
+    <div class="screen" style="background: #f0fff4;">
+        <div style="margin: auto;">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+                <path d="M50 5 L62 38 L95 38 L68 58 L78 92 L50 72 L22 92 L32 58 L5 38 L38 38 Z" fill="#34a853"/>
+                <path d="M35 50 L45 60 L65 40" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+            </svg>
+            <h2 style="color: #34a853; margin-top: 20px;">100% HIMOAYALANDI ✅</h2>
+            <p style="color: #666;">Audit muvaffaqiyatli yakunlandi.</p>
+        </div>
+        <button class="btn-black" onclick="location.reload()">TUGALLASH</button>
     </div>
+
 </div>
 
 <script>
-    function toStep(n) {
-        document.querySelectorAll('.container > div').forEach(d => d.classList.add('hidden'));
-        document.getElementById('step' + n).classList.remove('hidden');
-        if(n === 3) {
-            const name = document.getElementById('uName').value || "Akmal";
-            document.getElementById('dispName').innerText = name;
+    function moveTo(screenIndex) {
+        // Ismni yangilash
+        if(screenIndex === 2) {
+            const name = document.getElementById('nameIn').value || "Akmal";
+            document.getElementById('userLabel').innerText = name;
         }
-    }
-
-    function completeSecure() {
-        const msg = document.getElementById('statusMsg');
-        msg.innerText = "TEKSHIRILMOQDA...";
-        msg.style.color = "#1a73e8";
         
-        setTimeout(() => {
-            toStep(4);
-        }, 1500);
+        // Ekranni surish (viewport'ni chapga siljitish)
+        const offset = screenIndex * -25; // Har bir oyna 25% (chunki jami 4 ta oyna 100% emas, 400% kenglikda)
+        // Lekin mantiqan har bir ekran kengligi 100vw bo'lishi kerak.
+        // Keling aniqroq mantiqni ishlatamiz:
+        document.getElementById('vPort').style.transform = `translateX(-${screenIndex * 100}vw)`;
     }
+    
+    // Avtomatik fokus keyingi OTP katakka
+    const otps = document.querySelectorAll('.otp-item');
+    otps.forEach((input, index) => {
+        input.addEventListener('input', () => {
+            if (input.value && otps[index + 1]) otps[index + 1].focus();
+        });
+    });
 </script>
+
+<style>
+    /* Oynalar kengligini to'g'irlash */
+    .screen { width: 100vw; }
+</style>
 
 </body>
 </html>
