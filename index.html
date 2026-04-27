@@ -3,178 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Havfsizlik 2.0 | Official</title>
+    <title>ANTI.V | System Core</title>
     <style>
         :root {
-            --primary-bg: #ffffff;
-            --accent-blue: #1a73e8;
-            --text-dark: #202124;
-            --input-bg: #f1f3f4;
+            --neon-green: #00ff88;
+            --main-bg: #0a0b10;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            font-family: 'Google Sans', Roboto, Arial, sans-serif;
-            background: var(--primary-bg);
-            color: var(--text-dark);
-            overflow: hidden;
+        body {
+            margin: 0; background: var(--main-bg);
+            color: white; font-family: 'Inter', sans-serif;
+            display: flex; justify-content: center; align-items: center; height: 100vh;
         }
 
-        .container {
-            display: flex; flex-direction: column;
-            height: 100vh; width: 100%;
-            max-width: 500px; margin: 0 auto;
-            padding: 20px; box-sizing: border-box;
+        /* Shaffof va zamonaviy konteyner */
+        .app-container {
+            width: 100%; max-width: 400px; height: 100vh;
+            background: radial-gradient(circle at top right, #1a1b25, #0a0b10);
+            display: flex; flex-direction: column; padding: 30px; box-sizing: border-box;
         }
 
-        /* Yuqori qism dizayni */
-        .header {
-            text-align: center; margin-top: 20px; margin-bottom: 40px;
-        }
-        
-        .header h1 {
-            font-size: 22px; font-weight: 500; border: 1.5px solid #000;
-            display: inline-block; padding: 5px 25px; border-radius: 8px;
-            text-transform: lowercase;
+        .header-box {
+            text-align: center; border: 1px solid var(--neon-green);
+            padding: 10px; border-radius: 5px; font-weight: 800;
+            letter-spacing: 2px; color: var(--neon-green); box-shadow: 0 0 15px rgba(0,255,136,0.2);
         }
 
-        /* Inputlar uslubi */
-        .input-group { position: relative; margin-bottom: 20px; }
+        /* Inputlar dizayni */
+        .input-stack { margin-top: 40px; }
         input {
-            width: 100%; padding: 16px 20px; border-radius: 12px;
-            border: none; background: var(--input-bg);
-            font-size: 16px; box-sizing: border-box; transition: 0.3s;
+            width: 100%; background: var(--glass); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px; border-radius: 12px; color: white; margin-bottom: 15px;
+            font-size: 16px; outline: none; transition: 0.3s;
         }
-        input:focus { background: #e8f0fe; box-shadow: inset 0 0 0 2px var(--accent-blue); outline: none; }
+        input:focus { border-color: var(--neon-green); background: rgba(0,255,136,0.05); }
 
-        /* Tugma dizayni */
-        .btn-main {
-            background: #000; color: #fff; border: none;
-            padding: 18px; border-radius: 15px; font-size: 18px;
-            font-weight: bold; cursor: pointer; margin-top: auto;
-            transition: 0.3s active;
-        }
-        .btn-main:active { transform: scale(0.98); }
-
-        /* OTP Katakchalari */
-        .otp-wrapper { display: flex; justify-content: space-between; gap: 10px; margin: 40px 0; }
-        .otp-box {
-            width: 55px; height: 65px; border: 2px solid #dadce0;
-            border-radius: 12px; text-align: center; font-size: 24px;
-            font-weight: bold; background: transparent;
+        /* Asosiy tugma */
+        .btn-glow {
+            background: var(--neon-green); color: #000; border: none;
+            padding: 18px; border-radius: 15px; font-weight: bold;
+            font-size: 16px; cursor: pointer; margin-top: auto;
+            box-shadow: 0 5px 20px rgba(0,255,136,0.4);
         }
 
-        /* Dashboard va Emblema */
-        .profile-bar {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--input-bg); padding: 15px; border-radius: 20px;
-        }
-        .profile-img { width: 45px; height: 45px; border-radius: 50%; background: #ddd; border: 2px solid var(--accent-blue); }
-
-        .emblem-zone {
-            flex-grow: 1; display: flex; flex-direction: column;
+        /* Emblema (Siz xohlagandek sakkiz qirrali) */
+        .star-container {
+            margin: auto; position: relative; display: flex;
             justify-content: center; align-items: center;
         }
 
-        /* Sakkiz qirrali yulduz animatsiyasi */
-        .star-emblem {
-            width: 180px; height: 180px; fill: var(--accent-blue);
-            filter: drop-shadow(0 0 15px rgba(26,115,232,0.4));
-            animation: pulse 3s infinite ease-in-out;
-            cursor: pointer;
+        .star-svg {
+            width: 200px; filter: drop-shadow(0 0 20px var(--neon-green));
+            animation: rotateStar 10s linear infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(26,115,232,0.4)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(26,115,232,0.7)); }
+        @keyframes rotateStar {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            margin-top: 20px; text-align: center; font-size: 14px;
+            letter-spacing: 1px; color: #888;
+        }
+
+        .user-chip {
+            background: var(--glass); padding: 10px 20px;
+            border-radius: 30px; display: flex; align-items: center;
+            justify-content: space-between; border: 1px solid rgba(255,255,255,0.1);
         }
 
         .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.5s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="container" id="app">
-    <div id="step1" class="fade-in" style="height: 100%; display: flex; flex-direction: column;">
-        <div class="header"><h1>havfsizlik 2.0</h1></div>
-        <input type="text" id="name" placeholder="isim:">
-        <input type="text" id="surname" placeholder="familiya:">
-        <input type="tel" id="phone" value="+998">
-        <input type="email" id="email" placeholder="gmail:">
-        <button class="btn-main" onclick="nextStep(2)">keyingisi</button>
+<div class="app-container">
+    <div id="s1" style="height: 100%; display: flex; flex-direction: column;">
+        <div class="header-box">HAVFSIZLIK 2.0</div>
+        <div class="input-stack">
+            <input type="text" id="i1" placeholder="Ism">
+            <input type="text" id="i2" placeholder="Familiya">
+            <input type="tel" value="+998">
+            <input type="email" placeholder="Gmail">
+        </div>
+        <button class="btn-glow" onclick="go(2)">KEYINGISI</button>
     </div>
 
-    <div id="step2" class="hidden fade-in" style="height: 100%; display: flex; flex-direction: column;">
-        <div class="header"><h1>havfsizlik 2.0</h1></div>
-        <p style="text-align: center; color: #5f6368;">iltimos kelgan code ni kiriting:</p>
-        <div class="otp-wrapper">
-            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
-            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
-            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
-            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
-            <input type="text" class="otp-box" maxlength="1" oninput="moveNext(this)">
+    <div id="s3" class="hidden" style="height: 100%; display: flex; flex-direction: column;">
+        <div class="user-chip">
+            <span id="uName">Akmal</span>
+            <div style="width: 35px; height: 35px; background: #333; border-radius: 50%; border: 2px solid var(--neon-green);"></div>
         </div>
-        <button class="btn-main" onclick="nextStep(3)">tizimga kirish</button>
-    </div>
-
-    <div id="step3" class="hidden fade-in" style="height: 100%; display: flex; flex-direction: column;">
-        <div class="profile-bar">
-            <div>
-                <span style="font-size: 12px; color: #555;">Foydalanuvchi:</span><br>
-                <b id="userDisp" style="border: 1px solid #000; padding: 2px 10px; border-radius: 4px;">...</b>
-            </div>
-            <div class="profile-img">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="100%">
-            </div>
+        
+        <div style="margin-top: 20px; font-size: 12px; color: #555;">
+            ANDROID SISTEMASI: <br>
+            <span style="color: #ccc;">KERNEL_X86_64 // SECURE_BOOT</span>
         </div>
 
-        <div style="margin-top: 20px; font-size: 14px;">
-            android sistemasi: <br>
-            <b style="color: var(--accent-blue);">Android 14 | Security Patch 2026</b>
-        </div>
-
-        <div class="emblem-zone">
-            <svg class="star-emblem" viewBox="0 0 100 100" onclick="completeSecure()">
-                <path d="M50 0 L60 35 L95 35 L67 55 L77 90 L50 70 L23 90 L33 55 L5 35 L40 35 Z" />
+        <div class="star-container">
+            <svg class="star-svg" viewBox="0 0 100 100">
+                <path d="M50 5 L58 38 L95 38 L65 58 L75 95 L50 75 L25 95 L35 58 L5 38 L42 38 Z" fill="none" stroke="var(--neon-green)" stroke-width="2" />
+                <path d="M50 15 L55 42 L85 42 L60 58 L68 85 L50 70 L32 85 L40 58 L15 42 L45 42 Z" fill="var(--neon-green)" opacity="0.3" />
             </svg>
-            <p id="statusTxt" style="margin-top: 20px; font-weight: bold; letter-spacing: 1px;">QURILMA TEKSHIRILMOQDA...</p>
         </div>
+
+        <div class="status-text" id="st">TIZIMNI AKTIVLASHTIRISH UCHUN BOSING</div>
+        <button class="btn-glow" onclick="activate()">HIMOAYANI BOSHLASH</button>
     </div>
 </div>
 
 <script>
-    let uData = {};
-
-    function nextStep(step) {
-        if(step === 2) {
-            uData.name = document.getElementById('name').value;
-            if(!uData.name) return alert("Ismingizni kiriting!");
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.remove('hidden');
-        } else if(step === 3) {
-            document.getElementById('userDisp').innerText = uData.name;
-            document.getElementById('step2').classList.add('hidden');
-            document.getElementById('step3').classList.remove('hidden');
-        }
+    function go(n) {
+        document.getElementById('uName').innerText = document.getElementById('i1').value || "Akmal";
+        document.getElementById('s1').classList.add('hidden');
+        document.getElementById('s3').classList.remove('hidden');
     }
 
-    function moveNext(el) {
-        if(el.value && el.nextElementSibling) el.nextElementSibling.focus();
-    }
-
-    function completeSecure() {
-        const txt = document.getElementById('statusTxt');
-        const star = document.querySelector('.star-emblem');
-        
-        txt.innerText = "TIZIM 100% HIMOAYALANDI ✅";
-        txt.style.color = "#34a853";
-        star.style.fill = "#34a853";
-        star.style.animation = "none";
-        star.style.transform = "scale(1.2)";
-        
-        // Bu yerda botga yakuniy xabar yuborish mumkin
+    function activate() {
+        const s = document.querySelector('.star-svg');
+        s.style.fill = "var(--neon-green)";
+        s.style.filter = "drop-shadow(0 0 40px var(--neon-green))";
+        document.getElementById('st').innerHTML = "TIZIM 100% HIMOAYALANDI ✅";
+        document.getElementById('st').style.color = "var(--neon-green)";
     }
 </script>
 
